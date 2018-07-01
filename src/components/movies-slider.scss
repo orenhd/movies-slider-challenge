@@ -1,0 +1,65 @@
+@import '../shared/styles/variables';
+@import '../shared/styles/colors';
+
+:local .moviesSlider {
+    position: relative;
+    width: 100%;
+    margin-top: $app-header-height;
+    overflow: hidden;
+    transform: translateZ(0); /* force a new layer */
+
+    &:before { /* titles triangle */
+        content: '';
+        position: absolute;
+        border-bottom: 16px solid $background-color-secondary;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        top: calc(43vw - 16px);
+        left: calc(50% - 16px);
+        z-index: 1;
+    }
+
+    &.moviesSliderPointerEventsDisabled {
+        pointer-events: none;
+    }
+
+    .moviesSliderItemsWrapper {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        height: 43vw; /* movie image aspect ratio */
+        transition: transform 900ms ease-out;
+    }
+
+    .moviesSliderTitlesWrapper {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        background-color: $background-color-secondary;
+        transition: transform 600ms ease;
+    }
+
+    &.moviesSliderTransitionDisabled {
+        .moviesSliderItemsWrapper, .moviesSliderTitlesWrapper {
+            /* a close to zero value - transition won't be rendered, but onTransitionEnd will be triggered */
+            transition-duration: 0.001ms; 
+        }
+    }
+
+    .moviesSliderNavigator {
+        position: absolute;
+        height: 32px;
+        top: calc(43vw / 2  - 16px);
+        font-size: 32px;
+        color: white;
+        cursor: pointer;
+
+        &.moviesSliderNavigatorLeft {
+            left: 20px;
+        }
+
+        &.moviesSliderNavigatorRight {
+            right: 20px;
+        }
+    }
+}

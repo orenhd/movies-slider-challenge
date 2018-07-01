@@ -1,0 +1,39 @@
+@import '../shared/styles/colors';
+
+:local .moviesSliderTitleItem {
+    display: block;
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+    cursor: pointer;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 15%;
+        left: -1px;
+        width: 2px;
+        height: 70%;
+        background-color: rgba(210,210,210,.15);
+    }
+
+    h1 {
+        position: relative;
+        top: 50%;
+        font-size: 16px;
+        text-align: center;
+        line-height: 1.15em;
+        font-weight: 400;
+        color: $text-color-secondary;
+        text-transform: uppercase;
+        transform: translateY(-50%);
+        padding: 10px;
+    }
+
+    &.currentMovieItem {
+       h1 {
+            font-weight: 700;
+            color: $text-color-primary;
+       } 
+    }
+}

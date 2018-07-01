@@ -1,0 +1,15 @@
+@import '../shared/styles/variables';
+@import '../shared/styles/colors';
+
+:local .appHeader {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: $app-header-height;
+    background-color: $background-color-primary;
+    background-image: url('../../src/assets/twentieth-century-fox-logo.png');
+    background-repeat: no-repeat;
+    background-size: auto 69px;
+    background-position: 8px 8px;
+    z-index: 10;
+}

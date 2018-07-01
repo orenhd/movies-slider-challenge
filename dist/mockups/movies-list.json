@@ -1,0 +1,70 @@
+{
+	"moviesList": [
+		{
+			"id": "0787dda5-fc14-4da5-b4d6-79128d76ac86",
+			"title": "Bad Times At The El Royale",
+			"release": "In Theaters October 12, 2018",
+			"image": "__5b1976dd77fe5.jpg"
+		},
+		{
+			"id": "b454d07b-6c57-425a-83f0-3481dc2002c6",
+			"title": "The Predator",
+			"release": "In Theaters September 14, 2018",
+			"image": "__5b3534219a0e8.jpg"
+		},
+		{
+			"id": "e889da8a-ade2-4dbe-903a-5a9a0ffd1b10",
+			"title": "The Hate U Give",
+			"release": "In Theaters October 19, 2018",
+			"image": "__5b3044799a00e.jpg"
+		},
+		{
+			"id": "8543e12e-dd01-46f8-bd9f-5c2fe0b75a7c",
+			"title": "Deadpool 2",
+			"release": "Now Playing",
+			"image": "__5ab40c71a8925.jpg"
+		},
+		{
+			"id": "e786fa5e-7ebe-418b-a00a-26593db56e25",
+			"title": "The Darkest Minds",
+			"release": "In Theaters August 3, 2018",
+			"image": "__5abb9737d7dad.jpg"
+		},
+		{
+			"id": "a31e387b-fc6f-4459-a007-3a35b6c5fc84",
+			"title": "Bohemian Rhapsody",
+			"release": "In Theaters November 2, 2018",
+			"image": "__5afb78804b161.jpg"
+		},
+		{
+			"id": "ba9c1592-dd46-4e43-89f1-96e3c8932f79",
+			"title": "Widows",
+			"release": "In Theaters November 16, 2018",
+			"image": "__5b1532ce72f65.jpg"
+		},
+		{
+			"id": "622124f4-25ab-49cc-bebe-9a5357bc335c",
+			"title": "Alita: Battle Angel",
+			"release": "In Theaters December 21, 2018",
+			"image": "__5a2aed7c3b69e.jpg"
+		},
+		{
+			"id": "8342df01-ca8c-4299-999a-bf4cf2e1fdba",
+			"title": "Super Troopers 2",
+			"release": "On Digital July 3 | On Blu-Ray & DVD July 17",
+			"image": "__5b0dc14fc5a17.jpg"
+		},
+		{
+			"id": "d19c0a2c-1c7c-4963-9ae7-13d1660348bd",
+			"title": "Love, Simon",
+			"release": "Now on Blu-Ray, DVD, 4K Ultra HD & Digital",
+			"image": "__5a5ffd5492ed2.jpg"
+		},
+		{
+			"id": "8ccc91e2-05ef-4d00-a5b7-7ada2cb77af3",
+			"title": "Isle of Dogs",
+			"release": "Now on Digital | On Blu-Ray & DVD July 17",
+			"image": "__5b160cd989688.jpg"
+		}
+	]
+}
