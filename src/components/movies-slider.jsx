@@ -40,8 +40,7 @@ export default class MoviesSlider extends PureComponent {
         if (currentMovieIndex === 0 || currentMovieIndex === moviesList.length + 1)  { // fix for items slider
             const targetIndex = currentMovieIndex === 0 ? moviesList.length : 1;
             this.setState({ transitionDisabled: true, currentMovieIndex: targetIndex, currentTitlesCloneSet: 0 });
-        } else if (currentTitlesCloneSet === -1 && currentMovieIndex < moviesList.length - 5 ||
-            currentTitlesCloneSet === 1 && currentMovieIndex > 5) { // fix for titles slider
+        } else if (currentTitlesCloneSet !== 0) { // fix for titles slider
             this.setState({ transitionDisabled: true, currentTitlesCloneSet: 0 });
         }
     }
