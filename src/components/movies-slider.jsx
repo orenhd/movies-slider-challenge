@@ -46,8 +46,6 @@ export default class MoviesSlider extends PureComponent {
     }
 
     handleTitlesSliderTransitionEnd = () => {
-        const { transitionDisabled } = this.state;
-
         /* the titles slider triggers a transition on every step */
         this.setState({ transitionDisabled: false, pointerEventsDisabled: false });
 
