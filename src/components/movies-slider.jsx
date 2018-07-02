@@ -37,8 +37,8 @@ export default class MoviesSlider extends PureComponent {
     handleSliderTransitionEnd = () => {
         const { moviesList, currentMovieIndex, currentTitlesCloneSet } = this.state;
 
-        if (currentMovieIndex === 0 || currentMovieIndex === moviesList.length + 1)  { // fix for items slider
-            const targetIndex = currentMovieIndex === 0 ? moviesList.length : 1;
+        if (currentMovieIndex < 1 || currentMovieIndex > moviesList.length)  { // fix for items slider
+            const targetIndex = currentMovieIndex < 1 ? moviesList.length : 1;
             this.setState({ transitionDisabled: true, currentMovieIndex: targetIndex, currentTitlesCloneSet: 0 });
         } else if (currentTitlesCloneSet !== 0) { // fix for titles slider
             this.setState({ transitionDisabled: true, currentTitlesCloneSet: 0 });
@@ -55,11 +55,15 @@ export default class MoviesSlider extends PureComponent {
     }
 
     handleLeftNavigatorClick = () => {
-        this.setState({ currentMovieIndex: this.state.currentMovieIndex - 1, pointerEventsDisabled: true });
+        const { currentMovieIndex } = this.state;
+        const targetMovieIndex = currentMovieIndex > 0 ? currentMovieIndex - 1 : 0;
+        this.setState({ currentMovieIndex: targetMovieIndex, pointerEventsDisabled: true });
     }
 
     handleRightNavigatorClick = () => {
-        this.setState({ currentMovieIndex: this.state.currentMovieIndex + 1, pointerEventsDisabled: true });
+        const { moviesList, currentMovieIndex } = this.state;
+        const targetMovieIndex = currentMovieIndex < moviesList.length + 1 ? currentMovieIndex + 1 : moviesList.length + 1;
+        this.setState({ currentMovieIndex: targetMovieIndex, pointerEventsDisabled: true });
     }
     
     handleTitleItemClick = (targetMovieIndex, targetTitlesCloneSet) => {
