@@ -17,6 +17,7 @@ export default class MoviesSlider extends PureComponent {
         this.state = {
             moviesList: [],
             currentMovieIndex: 1,
+            currentTitlesCloneSet: 0,
             transitionDisabled: false,
             pointerEventsDisabled: false,
         };
@@ -34,18 +35,26 @@ export default class MoviesSlider extends PureComponent {
     /* Class Methods */
 
     handleSliderTransitionEnd = () => {
-        const { moviesList, currentMovieIndex } = this.state;
+        const { moviesList, currentMovieIndex, currentTitlesCloneSet } = this.state;
 
-        if (currentMovieIndex === 0 || currentMovieIndex === moviesList.length + 1)  {
+        if (currentMovieIndex === 0 || currentMovieIndex === moviesList.length + 1)  { // fix for items slider
             const targetIndex = currentMovieIndex === 0 ? moviesList.length : 1;
-            this.setState({ transitionDisabled: true, currentMovieIndex: targetIndex });
-        } else { // else - retain transition and pointer events and re-init. auto navigatr
-            this.setState({ transitionDisabled: false, pointerEventsDisabled: false });
-
-            if (this.autoNavigateTimeout) { clearTimeout(this.autoNavigateTimeout) }
-            
-            this.autoNavigateTimeout = setTimeout(this.handleRightNavigatorClick, AUTO_NAVIGATE_WAITING_DURATION);
+            this.setState({ transitionDisabled: true, currentMovieIndex: targetIndex, currentTitlesCloneSet: 0 });
+        } else if (currentTitlesCloneSet === -1 && currentMovieIndex < moviesList.length - 5 ||
+            currentTitlesCloneSet === 1 && currentMovieIndex > 5) { // fix for titles slider
+            this.setState({ transitionDisabled: true, currentTitlesCloneSet: 0 });
         }
+    }
+
+    handleTitlesSliderTransitionEnd = () => {
+        const { transitionDisabled } = this.state;
+
+        /* the titles slider triggers a transition on every step */
+        this.setState({ transitionDisabled: false, pointerEventsDisabled: false });
+
+        if (this.autoNavigateTimeout) { clearTimeout(this.autoNavigateTimeout) }
+        
+        this.autoNavigateTimeout = setTimeout(this.handleRightNavigatorClick, AUTO_NAVIGATE_WAITING_DURATION);
     }
 
     handleLeftNavigatorClick = () => {
@@ -56,13 +65,13 @@ export default class MoviesSlider extends PureComponent {
         this.setState({ currentMovieIndex: this.state.currentMovieIndex + 1, pointerEventsDisabled: true });
     }
     
-    handleTitleItemClick = (targetMovieIndex) => {
-        this.setState({ currentMovieIndex: targetMovieIndex, pointerEventsDisabled: true });
+    handleTitleItemClick = (targetMovieIndex, targetTitlesCloneSet) => {
+        this.setState({ currentMovieIndex: targetMovieIndex, currentTitlesCloneSet: targetTitlesCloneSet, pointerEventsDisabled: true });
     }
 
     render() {
 
-        const { moviesList, currentMovieIndex } = this.state;
+        const { moviesList, currentMovieIndex, currentTitlesCloneSet } = this.state;
 
         if (!this.state.moviesList || !this.state.moviesList.length) return <p>Loading...</p>; // TODO: render a loader
 
@@ -72,19 +81,19 @@ export default class MoviesSlider extends PureComponent {
             { ...moviesList[0], id: `${moviesList[0].id}-clone` }
         ]
 
-        const moviesSliderTitleItems = [
-            { id: `${moviesList[moviesList.length - 3].id}-clone`, title: moviesList[moviesList.length - 3].title, targetMovieIndex: moviesList.length - 2, isCurrent: currentMovieIndex === moviesList.length - 2 },
-            { id: `${moviesList[moviesList.length - 2].id}-clone`, title: moviesList[moviesList.length - 2].title, targetMovieIndex: moviesList.length - 1, isCurrent: currentMovieIndex === moviesList.length - 1 },
-            { id: `${moviesList[moviesList.length - 1].id}-clone`, title: moviesList[moviesList.length - 1].title, targetMovieIndex: moviesList.length, isCurrent: (currentMovieIndex === 0 || currentMovieIndex === moviesList.length) },
-            ...(moviesList.map((movieEntry, index) => { return {
+        let moviesSliderTitleItems = moviesList.map((movieEntry, index) => { 
+            return {
                 id: movieEntry.id,
                 title: movieEntry.title, 
                 targetMovieIndex: index + 1,
-                isCurrent: currentMovieIndex === index + 1
-            }})), 
-            { id: `${moviesList[0].id}-clone`, title: moviesList[0].title, targetMovieIndex: 1, isCurrent: (currentMovieIndex === moviesList.length + 1 || currentMovieIndex === 1) },
-            { id: `${moviesList[1].id}-clone`, title: moviesList[1].title, targetMovieIndex: 2, isCurrent: currentMovieIndex === 2 },
-            { id: `${moviesList[2].id}-clone`, title: moviesList[2].title, targetMovieIndex: 3, isCurrent: currentMovieIndex === 3 }
+                targetTitlesCloneSet: 0,
+                isCurrent: currentMovieIndex % moviesList.length === (index + 1)  % moviesList.length
+            }
+        });
+
+        moviesSliderTitleItems = [...(moviesSliderTitleItems.map((movieTitleEntry) => { return {...movieTitleEntry, id: `${movieTitleEntry.id}-precede-clone`, targetTitlesCloneSet: -1 } })),
+            ...moviesSliderTitleItems,
+            ...(moviesSliderTitleItems.map((movieTitleEntry) => { return {...movieTitleEntry, id: `${movieTitleEntry.id}-follow-clone`, targetTitlesCloneSet: 1 } })),
         ]
 
         const moviesSliderClass = classNames({
@@ -103,13 +112,15 @@ export default class MoviesSlider extends PureComponent {
                 )}
             </ul>
             <ul className={styles.moviesSliderTitlesWrapper}
-                style={{ width: `${(moviesList.length + 6) * 25}%`, transform: `translateX(${(currentMovieIndex + 0.5) * -100 / (moviesList.length + 6)}%)` }}
+                style={{ width: `${moviesList.length * 3 * 25}%`, transform: `translateX(${(currentMovieIndex + (moviesList.length * (currentTitlesCloneSet + 1)) - 2.5) * -100 / (moviesList.length * 3)}%)` }}
+                onTransitionEnd={this.handleTitlesSliderTransitionEnd}
             >
                 {moviesSliderTitleItems.map((movieTitleEntry) =>
                     <MoviesSliderTitleItem 
-                        key={movieTitleEntry.id} 
+                        key={movieTitleEntry.id}
                         title={movieTitleEntry.title}
-                        targetMovieIndex={movieTitleEntry.targetMovieIndex} 
+                        targetMovieIndex={movieTitleEntry.targetMovieIndex}
+                        targetTitlesCloneSet={movieTitleEntry.targetTitlesCloneSet}
                         isCurrent={movieTitleEntry.isCurrent}
                         itemClickHandler={this.handleTitleItemClick}
                     />
